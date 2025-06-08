@@ -1,8 +1,5 @@
 ﻿#include "allitems.h"
 
-using namespace std;
-using namespace sf;
-
 int main() {
     setlocale(LC_ALL, "Russian");
     RenderWindow window(VideoMode(WIDTH + 2 * PADDING, HEIGHT + 2 * PADDING), "Checkers");
@@ -22,20 +19,19 @@ int main() {
 
     Sprite sprite;
     sprite.setTexture(texture);
-    sprite.setPosition(HEIGHT + 2 * PADDING, HEIGHT / 8);
+    sprite.setPosition((WIDTH-2*PADDING), HEIGHT / 2-PADDING);
 
     while (window.isOpen()) {
         Event _event;
         if (window.pollEvent(_event)) {
             if (_event.type == sf::Event::Closed)
                 window.close();
-            control(window, f, _event, _turn, yellowRect, greenRect, redRect);
+            if (!loseWhite(f))
+                if (!loseBlack(f))
+                    control(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, f, _event, _turn, yellowRect, greenRect, redRect);
         }
 
         window.clear(Color::White);
-        
-        kingCheck(f);
-        
         Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, f, yellowRect, greenRect, redRect);
         window.draw(sprite);
 
@@ -49,8 +45,9 @@ int main() {
             Text text;
             text.setFont(font);
             text.setString("BLACK WINS!");
-            text.setCharacterSize(55);
-            text.setFillColor(Color::Green);
+            text.setStyle(3);
+            text.setCharacterSize(70);
+            text.setFillColor(Color::Black);
 
             FloatRect textRect = text.getLocalBounds();
             text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
@@ -67,8 +64,9 @@ int main() {
             Text text;
             text.setFont(font);
             text.setString("WHITE WINS!");
-            text.setCharacterSize(55);
-            text.setFillColor(Color::Green);
+            text.setCharacterSize(70);
+            text.setStyle(3);
+            text.setFillColor(Color::White);
 
             FloatRect textRect = text.getLocalBounds();
             text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);

@@ -33,7 +33,7 @@ void setup(vector<vector<int>>&);
 int toGraph(int n);
 int toNum(int n);
 
-void control(RenderWindow&, vector<vector<int>>&, Event&, Position&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
+void control(RenderWindow&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, vector<vector<int>>&, Event&, Position&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
 
 void Draw(RenderWindow&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
 
@@ -42,9 +42,22 @@ bool loseBlack(vector<vector<int>>&);
 
 void kingCheck(vector<vector<int>>&);
 
+//
+
 bool whiteKingCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void whiteKingChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);
+
+bool whiteCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void whiteChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);
 
+bool whiteHasEatMoves(vector<vector<int>>&, set<pair<int, int>>&);
+
+//
+
+bool blackKingCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void blackKingChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);
+
+bool blackCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void blackChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);
+
+bool blackHasEatMoves(vector<vector<int>>&, set<pair<int, int>>&);
