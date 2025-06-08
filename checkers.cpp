@@ -26,9 +26,7 @@ int main() {
         if (window.pollEvent(_event)) {
             if (_event.type == sf::Event::Closed)
                 window.close();
-            if (!loseWhite(f))
-                if (!loseBlack(f))
-                    control(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, f, _event, _turn, yellowRect, greenRect, redRect);
+            control(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, f, _event, _turn, yellowRect, greenRect, redRect);
         }
 
         window.clear(Color::White);
