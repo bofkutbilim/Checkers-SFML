@@ -3,6 +3,7 @@
 #include <cassert>
 #include <vector>
 #include <set>
+#include <cstdlib>
 
 using namespace std;
 using namespace sf;
@@ -27,22 +28,20 @@ enum Position {
     BLACK_MOVE = 3
 };
 
-void initTexture(Texture&, Texture&, Texture&, Texture&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, Texture&);
+void initTexture(Texture&, Texture&, Texture&, Texture&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, Texture&, Texture&, Texture&);
 void setup(vector<vector<int>>&);
 
 int toGraph(int n);
 int toNum(int n);
 
-void control(RenderWindow&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, vector<vector<int>>&, Event&, Position&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
+void control(RenderWindow&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, Texture&, Texture&, Texture&, vector<vector<int>>&, vector<vector<vector<int>>>&, Event&, Position&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
 
-void Draw(RenderWindow&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
+void Draw(RenderWindow&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, RectangleShape&, Texture&, Texture&, Texture&, vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&);
 
 bool loseWhite(vector<vector<int>>&);
 bool loseBlack(vector<vector<int>>&);
 
 void kingCheck(vector<vector<int>>&);
-
-//
 
 bool whiteKingCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void whiteKingChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);
@@ -51,8 +50,6 @@ bool whiteCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void whiteChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);
 
 bool whiteHasEatMoves(vector<vector<int>>&, set<pair<int, int>>&);
-
-//
 
 bool blackKingCanEat(vector<vector<int>>&, set<pair<int, int>>&, int&, int&);
 void blackKingChoose(vector<vector<int>>&, set<pair<int, int>>&, set<pair<int, int>>&, set<pair<int, int>>&, int&, int&);

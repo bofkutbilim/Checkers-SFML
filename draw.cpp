@@ -9,7 +9,33 @@ int toNum(int n)
     return (n - PADDING) / 100;
 }
 
-void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& blackCell, RectangleShape& whiteChecker, RectangleShape& blackChecker, RectangleShape& whiteCheckerKing, RectangleShape& blackCheckerKing, vector<vector<int>>& f, set<pair<int, int>>& yellowRect, set<pair<int, int>>& greenRect, set<pair<int, int>>& redRect) {
+void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& blackCell, RectangleShape& whiteChecker, RectangleShape& blackChecker, RectangleShape& whiteCheckerKing, RectangleShape& blackCheckerKing, Texture& texture, Texture& textureExit, Texture& textureBack, vector<vector<int>>& f, set<pair<int, int>>& yellowRect, set<pair<int, int>>& greenRect, set<pair<int, int>>& redRect) {
+    
+    Texture backFon;
+    if (!backFon.loadFromFile("background.png")) {
+        cout << "Не удалось загрузить изображение!" << endl;
+        assert(false);
+    }
+    Sprite spriteFon;
+    spriteFon.setTexture(backFon);
+    spriteFon.setPosition(0, 0);
+    window.draw(spriteFon);
+
+    Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.setPosition((WIDTH-5), HEIGHT / 2 - PADDING);
+    window.draw(sprite);
+
+    Sprite spriteExit;
+    spriteExit.setTexture(textureExit);
+    spriteExit.setPosition((WIDTH-5), HEIGHT / 2 - PADDING + 150);
+    window.draw(spriteExit);
+
+    Sprite spriteBack;
+    spriteBack.setTexture(textureBack);
+    spriteBack.setPosition((WIDTH-5), HEIGHT / 2 - PADDING - 150);
+    window.draw(spriteBack);
+
     int cntBlack = 12;
     int cntWhite = 12;
     for (int x = 0; x < SZ; x++) {
@@ -51,13 +77,13 @@ void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& black
     }
 
     for (int i = 1; i <= cntWhite; i++) {
-        blackChecker.setPosition(HEIGHT + PADDING * 2, i * HEIGHT / 8 / 4);
-        window.draw(blackChecker);
+        whiteChecker.setPosition(HEIGHT + PADDING * 2, i * HEIGHT / 8 / 4);
+        window.draw(whiteChecker);
     }
 
-    for (int i = 1; i <= cntBlack; i++) {
-        whiteChecker.setPosition(HEIGHT + PADDING * 2, HEIGHT - i * HEIGHT / 8 / 4);
-        window.draw(whiteChecker);
+    for (int i = cntBlack; i >= 1; i--) {
+        blackChecker.setPosition(HEIGHT + PADDING * 2, HEIGHT - i * HEIGHT / 8 / 4);
+        window.draw(blackChecker);
     }
 
 
@@ -83,6 +109,23 @@ void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& black
         window.draw(x);
     }
 
+    Font fontCheckers;
+    if (!fontCheckers.loadFromFile("arial.ttf")) {
+        cout << "Не удалось загрузить шрифт!" << endl;
+        assert(false);
+    }
+
+    Text checkers;
+    checkers.setFont(fontCheckers);
+    checkers.setString(L"ШАШКИ");
+    checkers.setCharacterSize(43);
+    checkers.setFillColor(Color(252, 237, 216));
+
+    FloatRect textChecker = checkers.getLocalBounds();
+    checkers.setOrigin(textChecker.left + textChecker.width / 2.0f, textChecker.top + textChecker.height / 2.0f);
+    checkers.setPosition((WIDTH / 2 - PADDING), (PADDING / 2));
+    window.draw(checkers);
+
     Font _font;
     if (!_font.loadFromFile("arial.ttf")) {
         cout << "Не удалось загрузить шрифт!" << endl;
@@ -93,11 +136,11 @@ void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& black
     _text.setFont(_font);
     _text.setString("A      B      C      D      E      F      G      H");
     _text.setCharacterSize(43);
-    _text.setFillColor(Color::Black);
+    _text.setFillColor(Color(252, 237, 216));
 
     FloatRect textRect = _text.getLocalBounds();
     _text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-    _text.setPosition((WIDTH / 2-PADDING), (PADDING / 2-5));
+    _text.setPosition((WIDTH / 2-PADDING), (HEIGHT+PADDING*2-20));
     window.draw(_text);
 
     for (int i = 1; i <= SZ; i++) {
@@ -111,7 +154,7 @@ void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& black
         text.setFont(font);
         text.setString(to_string(SZ+1-i));
         text.setCharacterSize(46);
-        text.setFillColor(Color::Black);
+        text.setFillColor(Color(252, 237, 216));
 
         FloatRect textRect = text.getLocalBounds();
         text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
@@ -120,12 +163,12 @@ void Draw(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& black
     }
 }
 
-void initTexture(Texture& textureWhite, Texture& textureBlack, Texture& textureWhiteKing, Texture& textureBlackKing, RectangleShape& whiteCell, RectangleShape& blackCell, RectangleShape& whiteChecker, RectangleShape& blackChecker, RectangleShape& whiteCheckerKing, RectangleShape& blackCheckerKing, Texture& texture) {
-    blackCell.setFillColor(Color(98, 154, 204));
-    whiteCell.setFillColor(Color(199, 207, 226));
+void initTexture(Texture& textureWhite, Texture& textureBlack, Texture& textureWhiteKing, Texture& textureBlackKing, RectangleShape& whiteCell, RectangleShape& blackCell, RectangleShape& whiteChecker, RectangleShape& blackChecker, RectangleShape& whiteCheckerKing, RectangleShape& blackCheckerKing, Texture& texture, Texture& textureExit, Texture& textureBack) {
+    blackCell.setFillColor(Color(54, 45, 50));
+    whiteCell.setFillColor(Color(230, 179, 132));
 
-    auto operation = textureWhite.loadFromFile("whitecell.png");
-    operation = textureBlack.loadFromFile("blackcell.png");
+    auto operation = textureWhite.loadFromFile("whitechecker.png");
+    operation = textureBlack.loadFromFile("blackchecker.png");
     operation = textureWhiteKing.loadFromFile("whitedamka.png");
     operation = textureBlackKing.loadFromFile("blackdamka.png");
     whiteChecker.setTexture(&textureWhite);
@@ -139,7 +182,15 @@ void initTexture(Texture& textureWhite, Texture& textureBlack, Texture& textureW
     blackCell.setOutlineColor(Color::Black);
     whiteCell.setOutlineColor(Color::Black);
 
-    if (!texture.loadFromFile("restart4.jpg")) {
+    if (!texture.loadFromFile("restart.png")) {
+        cout << "Не удалось загрузить изображение!" << endl;
+        assert(false);
+    }
+    if (!textureExit.loadFromFile("exit.png")) {
+        cout << "Не удалось загрузить изображение!" << endl;
+        assert(false);
+    }
+    if (!textureBack.loadFromFile("back.png")) {
         cout << "Не удалось загрузить изображение!" << endl;
         assert(false);
     }

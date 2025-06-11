@@ -1,6 +1,6 @@
 #include "allitems.h"
 
-void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& blackCell, RectangleShape& whiteChecker, RectangleShape& blackChecker, RectangleShape& whiteCheckerKing, RectangleShape& blackCheckerKing, vector<vector<int>>& f, Event& event, Position& _turn, set<pair<int, int>>& yellowRect, set<pair<int, int>>& greenRect, set<pair<int, int>>& redRect) {
+void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& blackCell, RectangleShape& whiteChecker, RectangleShape& blackChecker, RectangleShape& whiteCheckerKing, RectangleShape& blackCheckerKing, Texture&texture, Texture& textureExit, Texture& textureBack, vector<vector<int>>& f, vector<vector<vector<int>>>& positions , Event& event, Position& _turn, set<pair<int, int>>& yellowRect, set<pair<int, int>>& greenRect, set<pair<int, int>>& redRect) {
     static int xChoose, yChoose;
 
     if (event.type == Event::MouseButtonPressed)
@@ -10,12 +10,25 @@ void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& bl
             int x = toNum(event.mouseButton.x);
             int y = toNum(event.mouseButton.y);
 
-            if (event.mouseButton.x >= WIDTH - 2 * PADDING && event.mouseButton.x <= WIDTH - 2 * PADDING + 170 && event.mouseButton.y >= HEIGHT / 2 - PADDING && event.mouseButton.y <= HEIGHT / 2 - PADDING + 170) {
+            if (event.mouseButton.x >= WIDTH - 5 && event.mouseButton.x <= WIDTH - 5 + 120 && event.mouseButton.y >= HEIGHT / 2 - PADDING  && event.mouseButton.y <= HEIGHT / 2 - PADDING + 120) {
                 setup(f);
+                positions.clear();
+                positions.push_back(f);
                 yellowRect.clear();
                 greenRect.clear();
                 redRect.clear();
                 _turn = Position::WHITE_CHOOSE;
+            }
+
+            if (event.mouseButton.x >= WIDTH - 5 && event.mouseButton.x <= WIDTH - 5 + 120 && event.mouseButton.y >= HEIGHT / 2 - PADDING + 150 && event.mouseButton.y <= HEIGHT / 2 - PADDING + 150 + 120) {
+                exit(0);
+            }
+
+            if (positions.size() > 1 && event.mouseButton.x >= WIDTH - 5 && event.mouseButton.x <= WIDTH - 5 + 120 && event.mouseButton.y >= HEIGHT / 2 - PADDING - 150 && event.mouseButton.y <= HEIGHT / 2 - PADDING - 150 + 120) {
+                positions.pop_back();
+                f = positions[positions.size()-1];
+                if (_turn == Position::WHITE_CHOOSE) _turn = Position::BLACK_CHOOSE;
+                else if (_turn == Position::BLACK_CHOOSE) _turn = Position::WHITE_CHOOSE;
             }
 
             if (x >= 0 && x < SZ && y >= 0 && y < SZ) {
@@ -79,7 +92,7 @@ void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& bl
                             yellowRect.insert({ x, y });
                             
                             window.clear(Color::White);
-                            Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCheckerKing, blackCheckerKing, f, yellowRect, greenRect, redRect);
+                            Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCheckerKing, blackCheckerKing, texture, textureExit, textureBack, f, yellowRect, greenRect, redRect);
                             window.display();
 
                             while (window.isOpen()) {
@@ -118,6 +131,7 @@ void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& bl
                     }
 
                     _turn = Position::BLACK_CHOOSE;
+                    positions.push_back(f);
                 }
                 else if (_turn == Position::BLACK_CHOOSE) {
                     if (f[y][x] != checker::BLACK && f[y][x] != checker::BLACK_KING) return;
@@ -178,7 +192,7 @@ void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& bl
                             yellowRect.insert({ x, y });
 
                             window.clear(Color::White);
-                            Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCheckerKing, blackCheckerKing, f, yellowRect, greenRect, redRect);
+                            Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCheckerKing, blackCheckerKing, texture, textureExit, textureBack, f, yellowRect, greenRect, redRect);
                             window.display();
 
                             while (window.isOpen()) {
@@ -217,6 +231,7 @@ void control(RenderWindow& window, RectangleShape& whiteCell, RectangleShape& bl
                     }
 
                     _turn = Position::WHITE_CHOOSE;
+                    positions.push_back(f);
                 }
             }
         }

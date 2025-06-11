@@ -2,7 +2,7 @@
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    RenderWindow window(VideoMode(WIDTH + 2 * PADDING, HEIGHT + 2 * PADDING), "Checkers");
+    RenderWindow window(VideoMode(WIDTH + 2 * PADDING + 50, HEIGHT + 2 * PADDING + 20), "Checkers");
 
     RectangleShape blackCell(Vector2f(100, 100)), whiteCell(Vector2f(100, 100));
     Texture textureWhite, textureBlack, textureWhiteKing, textureBlackKing;
@@ -13,25 +13,23 @@ int main() {
     set<pair<int, int>> yellowRect, greenRect, redRect;
     Position _turn = Position::WHITE_CHOOSE;
 
-    Texture texture;
-    initTexture(textureWhite, textureBlack, textureWhiteKing, textureBlackKing, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, texture);
+    Texture texture, textureExit, textureBack;
+    initTexture(textureWhite, textureBlack, textureWhiteKing, textureBlackKing, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, texture, textureExit, textureBack);
     setup(f);
 
-    Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.setPosition((WIDTH-2*PADDING), HEIGHT / 2-PADDING);
+    vector<vector<vector<int>>> positions;
+    positions.push_back(f);
 
     while (window.isOpen()) {
         Event _event;
         if (window.pollEvent(_event)) {
             if (_event.type == sf::Event::Closed)
                 window.close();
-            control(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, f, _event, _turn, yellowRect, greenRect, redRect);
+            control(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, texture, textureExit, textureBack, f, positions,  _event, _turn, yellowRect, greenRect, redRect);
         }
 
         window.clear(Color::White);
-        Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, f, yellowRect, greenRect, redRect);
-        window.draw(sprite);
+        Draw(window, whiteCell, blackCell, whiteChecker, blackChecker, whiteCkeckerKing, blackCheckerKing, texture, textureExit, textureBack, f, yellowRect, greenRect, redRect);
 
         if (loseWhite(f)) {
             Font font;
@@ -64,7 +62,7 @@ int main() {
             text.setString("WHITE WINS!");
             text.setCharacterSize(70);
             text.setStyle(3);
-            text.setFillColor(Color::White);
+            text.setFillColor(Color(202, 207, 196));
 
             FloatRect textRect = text.getLocalBounds();
             text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
